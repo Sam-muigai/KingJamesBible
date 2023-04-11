@@ -40,10 +40,10 @@ fun BookColumn(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Image(
+                Icon(
                     modifier = Modifier.size(45.dp),
                     painter = painterResource(id = R.drawable.bible),
-                    contentDescription = "Bible"
+                    contentDescription = "Bible",
                 )
                 Text(
                     text = bookTitle,

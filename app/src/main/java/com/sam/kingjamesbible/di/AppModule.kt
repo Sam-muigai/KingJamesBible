@@ -53,9 +53,11 @@ object AppModule {
     @Provides
     @Singleton
     fun provideBibleDatabase(@ApplicationContext context: Context): BibleDatabase =
-        Room.databaseBuilder(context, BibleDatabase::class.java, "bible_db")
+        Room.databaseBuilder(
+            context,
+            BibleDatabase::class.java,
+            "bible_db")
             .fallbackToDestructiveMigration()
-            //.addTypeConverter(Converters(GsonParser(Gson())))
             .build()
 
     @Provides

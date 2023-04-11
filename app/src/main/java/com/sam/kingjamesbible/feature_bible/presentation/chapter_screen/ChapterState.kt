@@ -8,3 +8,12 @@ data class ChapterState(
     val loading:Boolean = false
 )
 
+val fakeChapter = listOf(
+    ChapterData(
+        bibleId = "de4e12af7f28f599-01" ,
+        bookId = "GEN",
+        id = "GEN.3",
+        number = "3",
+        reference = "Genesis 3"
+    )
+)

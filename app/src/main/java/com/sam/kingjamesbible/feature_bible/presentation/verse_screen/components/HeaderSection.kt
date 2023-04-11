@@ -28,7 +28,7 @@ fun HeaderSection(
 ) {
     val (color, iconModifier) = if (showPreviousIcon) {
         Pair(
-            Color.Black,
+            MaterialTheme.colors.onBackground,
             Modifier
                 .size(35.dp)
                 .clickable { onPreviousClick() })
@@ -41,7 +41,7 @@ fun HeaderSection(
     }
     val (nextColor, nextIconModifier) = if (showNextIcon) {
         Pair(
-            Color.Black,
+            MaterialTheme.colors.onBackground,
             Modifier
                 .size(35.dp)
                 .clickable { onNextClick() })

@@ -4,6 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -17,6 +20,7 @@ import com.sam.kingjamesbible.feature_bible.core.VERSE_SCREEN
 import com.sam.kingjamesbible.feature_bible.presentation.chapter_screen.ChapterScreen
 import com.sam.kingjamesbible.feature_bible.presentation.chapter_screen.ChapterViewModel
 import com.sam.kingjamesbible.feature_bible.presentation.home_screen.HomeScreen
+import com.sam.kingjamesbible.feature_bible.presentation.home_screen.HomeScreenViewModel
 import com.sam.kingjamesbible.feature_bible.presentation.verse_screen.VerseScreen
 import com.sam.kingjamesbible.ui.theme.KingJamesBibleTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,7 +47,12 @@ fun MyApp(navController: NavHostController) {
         composable(
             route = HOME_SCREEN
         ) {
-            HomeScreen { route ->
+            val viewModel:HomeScreenViewModel = hiltViewModel()
+            HomeScreen(
+                modifier = Modifier
+                    .semantics { contentDescription = "Home Screen" },
+                viewModel = viewModel
+            ) { route ->
                 navController.navigate(route)
             }
         }
@@ -72,7 +81,7 @@ fun MyApp(navController: NavHostController) {
         composable(
             route = "$VERSE_SCREEN?chapterId={chapterId}?chapterCount={chapterCount}?bookName={bookName}",
             arguments = listOf(
-                navArgument("chapterCount"){
+                navArgument("chapterCount") {
                     type = NavType.StringType
                 },
                 navArgument("bookName") {

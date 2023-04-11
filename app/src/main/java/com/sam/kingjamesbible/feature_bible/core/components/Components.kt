@@ -1,6 +1,7 @@
 package com.sam.kingjamesbible.feature_bible.core.components
 
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
@@ -70,15 +71,16 @@ fun TopBar(
 @Composable
 fun LoadingScreen(modifier: Modifier = Modifier) {
     Box(
-        modifier.fillMaxSize(),
+        modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colors.background),
         contentAlignment = Alignment.Center
     ) {
         val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.bible))
         LottieAnimation(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(250.dp)
-                .semantics { contentDescription = "Loading Animation" },
+                .height(250.dp),
             iterations = LottieConstants.IterateForever,
             composition = composition,
         )

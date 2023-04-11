@@ -7,9 +7,12 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sam.kingjamesbible.feature_bible.core.DataState
+import com.sam.kingjamesbible.feature_bible.core.UiEvents
 import com.sam.kingjamesbible.feature_bible.domain.use_cases.UseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
@@ -25,6 +28,9 @@ class VerseViewModel @Inject constructor(
     private val _state = MutableStateFlow(VerseState())
     val state = _state.asStateFlow()
 
+    private val _uiEvents = MutableSharedFlow<UiEvents>()
+    val uiEvents = _uiEvents.asSharedFlow()
+
 
     var chapterCount by mutableStateOf("")
     init {
@@ -36,11 +42,6 @@ class VerseViewModel @Inject constructor(
         )
         getVerse(chapterId)
     }
-
-    private var content by mutableStateOf("")
-    private var chapter by mutableStateOf("")
-    private var previousChapter by mutableStateOf("")
-    private var nextChapter by mutableStateOf("")
 
     var isPreviousActive by mutableStateOf(true)
     var isNextActive by mutableStateOf(true)
@@ -59,72 +60,45 @@ class VerseViewModel @Inject constructor(
             useCases.getVerse(chapterId).collect{
                 when(it){
                     is DataState.Loading ->{
-                        _state.value = _state.value.copy(
-                            loading = true
-                        )
+                            _state.value = _state.value.copy(
+                                loading = true
+                            )
                     }
                     is DataState.Success ->{
-                        _state.value = _state.value.copy(
-                            loading = false,
-                            content = it.data?.content!!,
-                            previousChapter = it.data.previousId,
-                            nextChapter = it.data.nextId,
-                            bookChapter = it.data.reference
-                        )
+                        it.data?.let {verses ->
+                            _state.value = _state.value.copy(
+                                loading = false,
+                                content = verses.content,
+                                previousChapter = verses.previousId,
+                                nextChapter = verses.nextId,
+                                bookChapter = verses.reference
+                            )
+                        }
+                        isPreviousActive = _state.value.bookChapter.split(" ").last() != "1"
+                        isNextActive = _state.value.bookChapter.split(" ").last() != chapterCount
                     }
                     is DataState.Error ->{
-                        _state.value = _state.value.copy(
-                            loading = false,
-                            content = it.data?.content!!,
-                            previousChapter = it.data.previousId,
-                            nextChapter = it.data.nextId,
-                            bookChapter = it.data.reference
-                        )
+                        it.data?.let {verses ->
+                            _state.value = _state.value.copy(
+                                loading = false,
+                                content = verses.content,
+                                previousChapter = verses.previousId,
+                                nextChapter = verses.nextId,
+                                bookChapter = verses.reference
+                            )
+                        }
+                        emitUiEvents(UiEvents.ShowSnackBar(it.message!!))
+                        isPreviousActive = _state.value.bookChapter.split(" ").last() != "1"
+                        isNextActive = _state.value.bookChapter.split(" ").last() != chapterCount
                     }
                 }
             }
         }
     }
 
- /**   private fun getVerse(chapterId: String) {
+    private fun emitUiEvents(event: UiEvents){
         viewModelScope.launch {
-            _state.value = _state.value.copy(
-                loading = true
-            )
-            try {
-                useCases.getVerse(chapterId).collect {
-                    content = it.content
-                    chapter = it.reference
-                    previousChapter = it.previous.id
-                    nextChapter = it.next.id
-                    verseCount = it.verseCount
-                }
-                _state.value = state.value.copy(
-                    loading = false,
-                    content = content,
-                    bookChapter = chapter,
-                    previousChapter = previousChapter,
-                    nextChapter = nextChapter,
-                    verseCount = verseCount
-                )
-                isPreviousActive = _state.value.bookChapter.split(" ").last() != "1"
-                isNextActive = _state.value.bookChapter.split(" ").last() != chapterCount
-            } catch (e: IOException) {
-                _state.value = state.value.copy(
-                    loading = false,
-                    error = "Error occurred.Please check your internet connection"
-                )
-            } catch (e: HttpException) {
-                _state.value = state.value.copy(
-                    loading = false,
-                    error = "Server error occurred"
-                )
-            } catch (e: Exception) {
-                _state.value = state.value.copy(
-                    loading = false,
-                    error = "Unknown error occurred"
-                )
-            }
+            _uiEvents.emit(event)
         }
-    }**/
+    }
 }

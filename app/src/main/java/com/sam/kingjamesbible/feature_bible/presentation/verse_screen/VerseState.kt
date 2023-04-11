@@ -5,8 +5,15 @@ data class VerseState(
     val bookChapter:String = "",
     val content:String = "",
     val loading:Boolean = false,
-    val error:String? = null,
     val previousChapter:String = "",
     val nextChapter:String = "",
-    val verseCount:Int = 0
+)
+
+val fakeVerseState = VerseState(
+    bookName = "Genesis",
+    bookChapter = "Genesis 3",
+    content = "Contents of Genesis chapter 3",
+    loading = false,
+    previousChapter = "Genesis 2",
+    nextChapter = "Genesis 4"
 )

@@ -101,4 +101,11 @@ dependencies {
 
     //Jsoup
     implementation("org.jsoup:jsoup:1.14.3")
+
+    //Accompanist System Ui Controller
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.31.0-alpha"
+
+    // Navigation Compose Component
+    implementation "androidx.navigation:navigation-compose:2.5.3"
+    androidTestImplementation "androidx.navigation:navigation-testing:2.5.3"
 }

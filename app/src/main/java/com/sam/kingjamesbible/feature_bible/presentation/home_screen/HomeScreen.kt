@@ -28,7 +28,8 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen(
-    viewModel: HomeScreenViewModel = hiltViewModel(),
+    modifier: Modifier = Modifier,
+    viewModel: HomeScreenViewModel,
     onBookClick: (String) ->Unit
 ) {
     val uiState = viewModel.state.collectAsStateWithLifecycle().value
@@ -49,6 +50,7 @@ fun HomeScreen(
         }
     }
     HomeScreen(
+        modifier = modifier,
         state = uiState,
         scaffoldState = scaffoldState,
         onBookClick = viewModel::onBookClicked
@@ -56,7 +58,7 @@ fun HomeScreen(
 }
 
 @Composable
-private fun HomeScreen(
+fun HomeScreen(
     modifier: Modifier = Modifier,
     state: HomeScreenState,
     scaffoldState: ScaffoldState = rememberScaffoldState(),
@@ -76,7 +78,10 @@ private fun HomeScreen(
             LazyColumn {
                 itemsIndexed(state.books) { index, data ->
                     val backgroundColor =
-                        if (index % 2 == 0) Color.LightGray.copy(alpha = 0.2f) else Color.White
+                        if (index % 2 == 0)
+                            MaterialTheme.colors.secondary.copy(alpha = 0.2f)
+                        else
+                            MaterialTheme.colors.background
                     BookColumn(
                         backgroundColor = backgroundColor,
                         bookTitle = data.name,
@@ -90,7 +95,11 @@ private fun HomeScreen(
                 }
             }
             if (state.loading) {
-                LoadingScreen()
+                LoadingScreen(
+                    modifier = Modifier.semantics{
+                        contentDescription = "Loading animation"
+                    }
+                )
             }
         }
     }
