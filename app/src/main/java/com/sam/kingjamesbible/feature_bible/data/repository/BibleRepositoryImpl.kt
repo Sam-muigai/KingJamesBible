@@ -104,6 +104,14 @@ class BibleRepositoryImpl @Inject constructor(
                         data = versesLocal
                     )
                 )
+            }catch (e:IOException){
+                val versesLocal = dao.getVerses(chapterId)
+                emit(
+                    DataState.Error(
+                        data = versesLocal,
+                        message = "No internet!Check your internet connection."
+                    )
+                )
             } catch (e: Exception) {
                 val versesLocal = dao.getVerses(chapterId)
                 emit(
@@ -135,7 +143,7 @@ class BibleRepositoryImpl @Inject constructor(
                 emit(
                     DataState.Error(
                         data = dailyVerseLocal,
-                        message = "No internet connection"
+                        message = "No internet!Please check your connection"
                     )
                 )
             } catch (e: Exception) {
