@@ -10,5 +10,5 @@ val Teal200 = Color(0xFF03DAC5)
 val Orange = Color(0xFFDA9D1E)
 val White  = Color(0xFFFFFFFF)
 val Grey = Color(0xFF9E9E9E)
-
+val Cream_White = Color(0xFFFBEEDA)
 val Dark_Orange = Color(0xFFB3541E)

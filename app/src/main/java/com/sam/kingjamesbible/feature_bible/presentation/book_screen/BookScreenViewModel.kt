@@ -1,4 +1,4 @@
-package com.sam.kingjamesbible.feature_bible.presentation.home_screen
+package com.sam.kingjamesbible.feature_bible.presentation.book_screen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,11 +15,11 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeScreenViewModel @Inject constructor(
+class BookScreenViewModel @Inject constructor(
     private val useCases: UseCases
 ) : ViewModel() {
 
-    private var _state = MutableStateFlow(HomeScreenState())
+    private var _state = MutableStateFlow(BookScreenState())
     val state = _state.asStateFlow()
 
     private var _uiEvents = MutableSharedFlow<UiEvents>()
@@ -31,6 +31,10 @@ class HomeScreenViewModel @Inject constructor(
 
     fun onBookClicked(bookName:String,bookId:String,) {
         emitUiEvent(UiEvents.Navigate("$CHAPTER_SCREEN?bookId=$bookId?bookName=$bookName"))
+    }
+
+    fun onBackClicked(){
+        emitUiEvent(UiEvents.PopBackStack)
     }
 
     private fun getAllBooks() {

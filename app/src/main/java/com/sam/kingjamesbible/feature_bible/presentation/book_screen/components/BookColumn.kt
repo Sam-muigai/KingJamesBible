@@ -1,22 +1,17 @@
-package com.sam.kingjamesbible.feature_bible.presentation.home_screen.components
+package com.sam.kingjamesbible.feature_bible.presentation.book_screen.components
 
-import android.icu.text.CaseMap.Title
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sam.kingjamesbible.R
+import java.util.*
 
 
 @Composable
@@ -46,7 +41,7 @@ fun BookColumn(
                     contentDescription = "Bible",
                 )
                 Text(
-                    text = bookTitle,
+                    text = bookTitle.uppercase(Locale.ENGLISH),
                     style = MaterialTheme.typography.h6.copy(
                         fontWeight = FontWeight.ExtraBold
                     )

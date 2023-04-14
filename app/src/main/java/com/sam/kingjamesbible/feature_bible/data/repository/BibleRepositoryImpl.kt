@@ -4,8 +4,10 @@ import com.sam.kingjamesbible.feature_bible.core.DataState
 import com.sam.kingjamesbible.feature_bible.data.local.BibleDao
 import com.sam.kingjamesbible.feature_bible.data.local.books.BookData
 import com.sam.kingjamesbible.feature_bible.data.local.chapters.ChapterDataLocal
+import com.sam.kingjamesbible.feature_bible.data.local.daily_verse.DailyVerseLocal
 import com.sam.kingjamesbible.feature_bible.data.local.verse.VersesLocal
 import com.sam.kingjamesbible.feature_bible.data.remote.BibleApi
+import com.sam.kingjamesbible.feature_bible.data.remote.DailyVerseApi
 import com.sam.kingjamesbible.feature_bible.domain.repository.BibleRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -19,6 +21,7 @@ import javax.inject.Inject
 
 class BibleRepositoryImpl @Inject constructor(
     private val api: BibleApi,
+    private val dailyVerseApi: DailyVerseApi,
     private val dao: BibleDao
 ) : BibleRepository {
     override fun getAllBooks(): Flow<DataState<List<BookData>>> {
@@ -90,7 +93,7 @@ class BibleRepositoryImpl @Inject constructor(
             emit(DataState.Loading())
             try {
                 val verses = api.getVerses(chapterId = chapterId).data
-                withContext(Dispatchers.IO){
+                withContext(Dispatchers.IO) {
                     dao.deleteVerses(verses.toVerseLocal())
                     dao.insertVerses(verses.toVerseLocal())
                 }
@@ -101,12 +104,46 @@ class BibleRepositoryImpl @Inject constructor(
                         data = versesLocal
                     )
                 )
-            }catch (e:Exception){
+            } catch (e: Exception) {
                 val versesLocal = dao.getVerses(chapterId)
                 emit(
                     DataState.Error(
                         data = versesLocal,
                         message = "Unknown error occurred."
+                    )
+                )
+            }
+        }
+    }
+
+    override fun getDailyVerse(): Flow<DataState<DailyVerseLocal>> {
+        return flow {
+            val localDailyVerse = dao.getDailyVerse()
+            emit(
+                DataState.Loading(
+                    localDailyVerse
+                )
+            )
+            try {
+                val dailyVerse = dailyVerseApi.getDailyVerse()
+                dao.deleteDailyVerse(dailyVerse.toDailyVerseLocal())
+                dao.insertDailyVerse(dailyVerse.toDailyVerseLocal())
+                val dailyVerseLocal = dao.getDailyVerse()
+                emit(DataState.Success(dailyVerseLocal))
+            } catch (e: IOException) {
+                val dailyVerseLocal = dao.getDailyVerse()
+                emit(
+                    DataState.Error(
+                        data = dailyVerseLocal,
+                        message = "No internet connection"
+                    )
+                )
+            } catch (e: Exception) {
+                val dailyVerseLocal = dao.getDailyVerse()
+                emit(
+                    DataState.Error(
+                        data = dailyVerseLocal,
+                        message = "Unknown error occurred please try again later."
                     )
                 )
             }

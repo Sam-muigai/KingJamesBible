@@ -7,6 +7,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.sam.kingjamesbible.feature_bible.data.local.books.BookData
 import com.sam.kingjamesbible.feature_bible.data.local.chapters.ChapterDataLocal
+import com.sam.kingjamesbible.feature_bible.data.local.daily_verse.DailyVerseLocal
 import com.sam.kingjamesbible.feature_bible.data.local.verse.VersesLocal
 
 
@@ -39,5 +40,14 @@ interface BibleDao {
 
     @Insert
     suspend fun insertVerses(versesLocal: VersesLocal)
+
+    @Query("SELECT * FROM dailyverselocal")
+    suspend fun getDailyVerse():DailyVerseLocal
+
+    @Delete
+    suspend fun deleteDailyVerse(dailyVerseLocal: DailyVerseLocal)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertDailyVerse(dailyVerseLocal: DailyVerseLocal)
 
 }

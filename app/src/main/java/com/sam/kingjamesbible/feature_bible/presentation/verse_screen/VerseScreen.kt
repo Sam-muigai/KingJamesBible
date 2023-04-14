@@ -17,6 +17,7 @@ import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.toUpperCase
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.res.ResourcesCompat
@@ -28,6 +29,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sam.kingjamesbible.feature_bible.core.UiEvents
 import com.sam.kingjamesbible.feature_bible.core.components.LoadingScreen
 import kotlinx.coroutines.flow.collectLatest
+import java.util.*
 
 
 @Composable
@@ -96,13 +98,17 @@ fun VerseScreen(
                 .fillMaxSize()
                 .padding(it)
         ) {
-            HeaderSection(
-                title = state.bookChapter,
-                onNextClick = onNextClicked,
-                showPreviousIcon = showPreviousIcon,
-                showNextIcon = showNextIcon,
-                onPreviousClick = onPreviousClicked
-            )
+            if (state.loading){
+                Box(modifier = Modifier.height(50.dp))
+            }else{
+                HeaderSection(
+                    title = state.bookChapter,
+                    onNextClick = onNextClicked,
+                    showPreviousIcon = showPreviousIcon,
+                    showNextIcon = showNextIcon,
+                    onPreviousClick = onPreviousClicked
+                )
+            }
             Column(
                 modifier = Modifier
                     .fillMaxSize()

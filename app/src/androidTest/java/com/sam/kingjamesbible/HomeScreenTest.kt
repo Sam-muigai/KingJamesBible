@@ -1,14 +1,13 @@
 package com.sam.kingjamesbible
 
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import com.sam.kingjamesbible.feature_bible.domain.model.books.Books
 import com.sam.kingjamesbible.feature_bible.domain.model.books.Data
-import com.sam.kingjamesbible.feature_bible.presentation.home_screen.HomeScreen
-import com.sam.kingjamesbible.feature_bible.presentation.home_screen.HomeScreenState
+import com.sam.kingjamesbible.feature_bible.presentation.book_screen.BookScreen
+import com.sam.kingjamesbible.feature_bible.presentation.book_screen.BookScreenState
 import com.sam.kingjamesbible.ui.theme.KingJamesBibleTheme
 import org.junit.Rule
 import org.junit.Test
@@ -32,8 +31,8 @@ class HomeScreenTest {
     fun when_app_launches_top_bar_is_displayed() {
         composeTestRule.setContent {
             KingJamesBibleTheme {
-                HomeScreen(
-                    state = HomeScreenState(),
+                BookScreen(
+                    state = BookScreenState(),
                     onBookClick = { _, _ -> }
                 )
             }
@@ -47,8 +46,8 @@ class HomeScreenTest {
     fun when_loading_animation_is_showing() {
         composeTestRule.setContent {
             KingJamesBibleTheme {
-                HomeScreen(
-                    state = HomeScreenState(loading = true),
+                BookScreen(
+                    state = BookScreenState(loading = true),
                     onBookClick = { _, _ -> }
                 )
             }
@@ -63,8 +62,8 @@ class HomeScreenTest {
     fun when_data_is_available_it_is_displayed() {
         composeTestRule.setContent {
             KingJamesBibleTheme {
-                HomeScreen(
-                    state = HomeScreenState(books = listOf(data)),
+                BookScreen(
+                    state = BookScreenState(books = listOf(data)),
                     onBookClick = { _, _ -> }
                 )
             }

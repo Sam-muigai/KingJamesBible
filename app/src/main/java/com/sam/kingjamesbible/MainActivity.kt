@@ -15,12 +15,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.sam.kingjamesbible.feature_bible.core.CHAPTER_SCREEN
+import com.sam.kingjamesbible.feature_bible.core.BOOK_SCREEN
 import com.sam.kingjamesbible.feature_bible.core.HOME_SCREEN
 import com.sam.kingjamesbible.feature_bible.core.VERSE_SCREEN
 import com.sam.kingjamesbible.feature_bible.presentation.chapter_screen.ChapterScreen
 import com.sam.kingjamesbible.feature_bible.presentation.chapter_screen.ChapterViewModel
+import com.sam.kingjamesbible.feature_bible.presentation.book_screen.BookScreen
+import com.sam.kingjamesbible.feature_bible.presentation.book_screen.BookScreenViewModel
 import com.sam.kingjamesbible.feature_bible.presentation.home_screen.HomeScreen
-import com.sam.kingjamesbible.feature_bible.presentation.home_screen.HomeScreenViewModel
 import com.sam.kingjamesbible.feature_bible.presentation.verse_screen.VerseScreen
 import com.sam.kingjamesbible.ui.theme.KingJamesBibleTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -47,11 +49,32 @@ fun MyApp(navController: NavHostController) {
         composable(
             route = HOME_SCREEN
         ) {
-            val viewModel:HomeScreenViewModel = hiltViewModel()
             HomeScreen(
+                onNewTestamentClick = {
+                    navController.navigate("$BOOK_SCREEN?testament=$it")
+                }
+            ) {
+                navController.navigate("$BOOK_SCREEN?testament=$it")
+            }
+        }
+        composable(
+            route = "$BOOK_SCREEN?testament={testament}",
+            arguments = listOf(
+                navArgument("testament"){
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            val viewModel: BookScreenViewModel = hiltViewModel()
+            val testament = it.arguments?.getString("testament")!!
+            BookScreen(
                 modifier = Modifier
                     .semantics { contentDescription = "Home Screen" },
-                viewModel = viewModel
+                viewModel = viewModel,
+                testament = testament,
+                onBackClicked = {
+                    navController.popBackStack()
+                }
             ) { route ->
                 navController.navigate(route)
             }

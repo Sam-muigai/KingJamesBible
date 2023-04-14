@@ -9,6 +9,10 @@ import retrofit2.http.Path
 
 interface BibleApi {
 
+    //For getting a random bible verse
+    @GET()
+    suspend fun getRandomVerse()
+
     @GET("/v1/bibles/{bibleId}/books")
     suspend fun getAllBooks(
         @Path("bibleId") bibleId: String = KING_JAMES
@@ -29,6 +33,7 @@ interface BibleApi {
     companion object {
         const val KING_JAMES = "de4e12af7f28f599-01"
         const val BASE_URL = "https://api.scripture.api.bible"
+        const val DAILY_VERSE_BASE_URL = "https://beta.ourmanna.com/api"
     }
 
 }

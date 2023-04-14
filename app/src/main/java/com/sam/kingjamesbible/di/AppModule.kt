@@ -7,12 +7,10 @@ import com.sam.kingjamesbible.feature_bible.core.GsonParser
 import com.sam.kingjamesbible.feature_bible.data.local.BibleDatabase
 import com.sam.kingjamesbible.feature_bible.data.local.Converters
 import com.sam.kingjamesbible.feature_bible.data.remote.BibleApi
+import com.sam.kingjamesbible.feature_bible.data.remote.DailyVerseApi
 import com.sam.kingjamesbible.feature_bible.data.repository.BibleRepositoryImpl
 import com.sam.kingjamesbible.feature_bible.domain.repository.BibleRepository
-import com.sam.kingjamesbible.feature_bible.domain.use_cases.GetAllBooks
-import com.sam.kingjamesbible.feature_bible.domain.use_cases.GetChapters
-import com.sam.kingjamesbible.feature_bible.domain.use_cases.GetVerse
-import com.sam.kingjamesbible.feature_bible.domain.use_cases.UseCases
+import com.sam.kingjamesbible.feature_bible.domain.use_cases.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,6 +19,7 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.create
 import javax.inject.Singleton
 
 @Module
@@ -52,11 +51,22 @@ object AppModule {
 
     @Provides
     @Singleton
+    fun provideDailyVerseApi(): DailyVerseApi {
+        return Retrofit
+            .Builder()
+            .baseUrl(DailyVerseApi.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build().create(DailyVerseApi::class.java)
+    }
+
+    @Provides
+    @Singleton
     fun provideBibleDatabase(@ApplicationContext context: Context): BibleDatabase =
         Room.databaseBuilder(
             context,
             BibleDatabase::class.java,
-            "bible_db")
+            "bible_db"
+        )
             .fallbackToDestructiveMigration()
             .build()
 
@@ -64,9 +74,14 @@ object AppModule {
     @Singleton
     fun provideBibleRepository(
         api: BibleApi,
+        dailyVerseApi: DailyVerseApi,
         db: BibleDatabase
     ): BibleRepository {
-        return BibleRepositoryImpl(api, db.dao)
+        return BibleRepositoryImpl(
+            api,
+            dailyVerseApi,
+            db.dao
+        )
     }
 
     @Provides
@@ -77,7 +92,8 @@ object AppModule {
         return UseCases(
             getAllBooks = GetAllBooks(repository),
             getChapters = GetChapters(repository),
-            getVerse = GetVerse(repository)
+            getVerse = GetVerse(repository),
+            getDailyVerse = GetDailyVerse(repository)
         )
     }
 
