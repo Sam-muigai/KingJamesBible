@@ -41,7 +41,7 @@ fun BookColumn(
                     contentDescription = "Bible",
                 )
                 Text(
-                    text = bookTitle.uppercase(Locale.ENGLISH),
+                    text = bookTitle,
                     style = MaterialTheme.typography.h6.copy(
                         fontWeight = FontWeight.ExtraBold
                     )

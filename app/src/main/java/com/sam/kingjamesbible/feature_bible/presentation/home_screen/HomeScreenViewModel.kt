@@ -1,5 +1,8 @@
 package com.sam.kingjamesbible.feature_bible.presentation.home_screen
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sam.kingjamesbible.feature_bible.core.DataState
@@ -22,6 +25,10 @@ class HomeScreenViewModel @Inject constructor(
         getDailyVerse()
     }
 
+    var visible by mutableStateOf(false)
+    fun onVisibilityChange(){
+        visible = !visible
+    }
     private fun getDailyVerse() {
         viewModelScope.launch {
             useCases.getDailyVerse().collect{dataState ->
@@ -53,6 +60,4 @@ class HomeScreenViewModel @Inject constructor(
             }
         }
     }
-
-
 }

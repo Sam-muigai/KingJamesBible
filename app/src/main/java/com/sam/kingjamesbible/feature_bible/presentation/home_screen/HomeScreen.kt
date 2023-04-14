@@ -33,6 +33,8 @@ fun HomeScreen(
     val uiState = viewModel.state.collectAsState().value
     HomeScreen(
         state = uiState,
+        visible = viewModel.visible,
+        onVisibleChange = viewModel::onVisibilityChange,
         onOldTestamentClick = onOldTestamentClick,
         onNewTestamentClick = onNewTestamentClick
     )
@@ -43,12 +45,11 @@ fun HomeScreen(
 fun HomeScreen(
     modifier: Modifier = Modifier,
     state: HomeScreenState,
+    visible:Boolean,
+    onVisibleChange:()->Unit,
     onNewTestamentClick: (String) -> Unit,
     onOldTestamentClick: (String) -> Unit,
 ) {
-    var visible by remember {
-        mutableStateOf(false)
-    }
     Scaffold(
         modifier = modifier
     ) {
@@ -91,9 +92,7 @@ fun HomeScreen(
                 Spacer(modifier = Modifier.height(20.dp))
                 SelectBibleButton(
                     visible = visible,
-                    onButtonClick = {
-                        visible = !visible
-                    },
+                    onButtonClick = onVisibleChange,
                     onNewTestamentClick = onNewTestamentClick,
                     onOldTestamentClick = onOldTestamentClick
                 )

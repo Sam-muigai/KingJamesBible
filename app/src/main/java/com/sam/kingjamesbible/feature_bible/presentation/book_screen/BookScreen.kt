@@ -63,7 +63,9 @@ fun BookScreen(
     val bibleBooks = state.books
     val books = if (!state.loading){
         if (testament == "OLD TESTAMENT"){
-            bibleBooks.subList(0,53)
+            bibleBooks.subList(0,53).filter {
+                !catholicsBooks.contains(it.name)
+            }
         }else{
             bibleBooks.subList(53,bibleBooks.size)
         }

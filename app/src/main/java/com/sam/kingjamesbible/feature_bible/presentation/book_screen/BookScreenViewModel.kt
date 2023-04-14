@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.sam.kingjamesbible.feature_bible.core.CHAPTER_SCREEN
 import com.sam.kingjamesbible.feature_bible.core.DataState
 import com.sam.kingjamesbible.feature_bible.core.UiEvents
+import com.sam.kingjamesbible.feature_bible.data.local.books.BookData
 import com.sam.kingjamesbible.feature_bible.domain.use_cases.UseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -29,11 +30,11 @@ class BookScreenViewModel @Inject constructor(
         getAllBooks()
     }
 
-    fun onBookClicked(bookName:String,bookId:String,) {
+    fun onBookClicked(bookName: String, bookId: String) {
         emitUiEvent(UiEvents.Navigate("$CHAPTER_SCREEN?bookId=$bookId?bookName=$bookName"))
     }
 
-    fun onBackClicked(){
+    fun onBackClicked() {
         emitUiEvent(UiEvents.PopBackStack)
     }
 
