@@ -12,31 +12,40 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.sam.kingjamesbible.R
-import com.sam.kingjamesbible.feature_bible.core.components.TopBar
+import com.sam.kingjamesbible.feature_bible.core.UiEvents
 import com.sam.kingjamesbible.feature_bible.presentation.home_screen.components.DailyVerseCard
 import com.sam.kingjamesbible.feature_bible.presentation.home_screen.components.SelectBibleButton
-import com.sam.kingjamesbible.ui.theme.KingJamesBibleTheme
+import kotlinx.coroutines.flow.collectLatest
 
 
 @Composable
 fun HomeScreen(
     viewModel: HomeScreenViewModel = hiltViewModel(),
-    onNewTestamentClick: (String) -> Unit,
-    onOldTestamentClick: (String) -> Unit
+    onTestamentClick: (String) -> Unit
 ) {
     val uiState = viewModel.state.collectAsState().value
+    LaunchedEffect(key1 = true){
+        viewModel.uiEvents.collectLatest {
+            when(it){
+                is UiEvents.Navigate ->{
+                    onTestamentClick(it.route)
+                }
+                is UiEvents.PopBackStack ->Unit
+                is UiEvents.ShowSnackBar ->Unit
+            }
+        }
+    }
+
     HomeScreen(
         state = uiState,
         visible = viewModel.visible,
         onVisibleChange = viewModel::onVisibilityChange,
-        onOldTestamentClick = onOldTestamentClick,
-        onNewTestamentClick = onNewTestamentClick
+        onTestamentClick = viewModel::navigate
     )
 }
 
@@ -47,8 +56,7 @@ fun HomeScreen(
     state: HomeScreenState,
     visible:Boolean,
     onVisibleChange:()->Unit,
-    onNewTestamentClick: (String) -> Unit,
-    onOldTestamentClick: (String) -> Unit,
+    onTestamentClick: (String) -> Unit
 ) {
     Scaffold(
         modifier = modifier
@@ -93,10 +101,9 @@ fun HomeScreen(
                 SelectBibleButton(
                     visible = visible,
                     onButtonClick = onVisibleChange,
-                    onNewTestamentClick = onNewTestamentClick,
-                    onOldTestamentClick = onOldTestamentClick
+                    onTestamentClick = onTestamentClick
                 )
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(50.dp))
             }
         }
     }

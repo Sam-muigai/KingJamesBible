@@ -50,12 +50,10 @@ fun MyApp(navController: NavHostController) {
             route = HOME_SCREEN
         ) {
             HomeScreen(
-                onNewTestamentClick = {
-                    navController.navigate("$BOOK_SCREEN?testament=$it")
+                onTestamentClick = {
+                    navController.navigate(it)
                 }
-            ) {
-                navController.navigate("$BOOK_SCREEN?testament=$it")
-            }
+            )
         }
         composable(
             route = "$BOOK_SCREEN?testament={testament}",

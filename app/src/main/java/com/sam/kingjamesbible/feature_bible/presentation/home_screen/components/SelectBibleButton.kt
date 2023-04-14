@@ -17,8 +17,7 @@ import androidx.compose.ui.unit.dp
 fun SelectBibleButton(
     modifier: Modifier = Modifier,
     visible: Boolean,
-    onNewTestamentClick: (String) -> Unit,
-    onOldTestamentClick: (String) -> Unit,
+    onTestamentClick: (String) -> Unit,
     onButtonClick: () -> Unit
 ) {
     Surface(
@@ -47,12 +46,12 @@ fun SelectBibleButton(
                 ) {
                     BibleButton(
                         text = "NEW TESTAMENT",
-                        onButtonClick = { onNewTestamentClick("NEW TESTAMENT") }
+                        onButtonClick = { onTestamentClick("NEW TESTAMENT") }
                     )
                     Divider(modifier = Modifier.padding(horizontal = 8.dp))
                     BibleButton(
                         text = "OLD TESTAMENT",
-                        onButtonClick = { onOldTestamentClick("OLD TESTAMENT") }
+                        onButtonClick = { onTestamentClick("OLD TESTAMENT") }
                     )
                 }
             }

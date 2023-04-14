@@ -5,10 +5,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sam.kingjamesbible.feature_bible.core.BOOK_SCREEN
 import com.sam.kingjamesbible.feature_bible.core.DataState
+import com.sam.kingjamesbible.feature_bible.core.UiEvents
 import com.sam.kingjamesbible.feature_bible.domain.use_cases.UseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,6 +24,15 @@ class HomeScreenViewModel @Inject constructor(
 
     private var _state = MutableStateFlow(HomeScreenState())
     val state = _state.asStateFlow()
+
+    private var _uiEvent = MutableSharedFlow<UiEvents>()
+    val uiEvents = _uiEvent.asSharedFlow()
+
+    fun navigate(testament:String){
+        viewModelScope.launch {
+            _uiEvent.emit(UiEvents.Navigate("$BOOK_SCREEN?testament=$testament"))
+        }
+    }
 
     init {
         getDailyVerse()
