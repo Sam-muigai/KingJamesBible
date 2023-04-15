@@ -65,13 +65,7 @@ fun HomeScreen(
     onTestamentClick: (String) -> Unit
 ) {
     Scaffold(
-        modifier = modifier,
-        topBar = {
-            TopBar(
-                title = "Home",
-                icon = null
-            )
-        }
+        modifier = modifier
     ) {
         Surface(
             modifier = Modifier

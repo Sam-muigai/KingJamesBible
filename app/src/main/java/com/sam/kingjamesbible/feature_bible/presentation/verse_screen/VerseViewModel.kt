@@ -55,6 +55,9 @@ class VerseViewModel @Inject constructor(
         getVerse(state.value.nextChapter)
     }
 
+    fun onBackPressed(){
+        emitUiEvents(UiEvents.PopBackStack)
+    }
     private fun getVerse(chapterId:String){
         viewModelScope.launch {
             useCases.getVerse(chapterId).collect{
