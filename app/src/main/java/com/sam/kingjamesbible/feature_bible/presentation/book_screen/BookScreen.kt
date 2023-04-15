@@ -6,9 +6,11 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.sam.kingjamesbible.R
 import com.sam.kingjamesbible.feature_bible.core.UiEvents
 import com.sam.kingjamesbible.feature_bible.core.components.LoadingScreen
 import com.sam.kingjamesbible.feature_bible.core.components.TopBar
@@ -55,7 +57,7 @@ fun BookScreen(
 fun BookScreen(
     modifier: Modifier = Modifier,
     state: BookScreenState,
-    testament:String,
+    testament:String = "",
     onBackClicked:() ->Unit = {},
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     onBookClick: (String,String) -> Unit
@@ -76,7 +78,7 @@ fun BookScreen(
         modifier = modifier.fillMaxSize(),
         topBar = {
             TopBar(
-                title = "Select A book"
+                title = stringResource(id = R.string.select_book)
             ){
                 onBackClicked()
             }
@@ -88,7 +90,7 @@ fun BookScreen(
                 itemsIndexed(books) { index, data ->
                     val backgroundColor =
                         if (index % 2 == 0)
-                            MaterialTheme.colors.secondary.copy(alpha = 0.2f)
+                            MaterialTheme.colors.secondary.copy(alpha = 0.1f)
                         else
                             MaterialTheme.colors.background
                     BookColumn(

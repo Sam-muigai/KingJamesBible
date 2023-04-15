@@ -8,6 +8,7 @@ data class ChapterState(
     val loading:Boolean = false
 )
 
+//For testing purposes
 val fakeChapter = listOf(
     ChapterData(
         bibleId = "de4e12af7f28f599-01" ,

@@ -1,33 +1,23 @@
 package com.sam.kingjamesbible.feature_bible.presentation.chapter_screen
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.ExperimentalFoundationApi
+
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.grid.itemsIndexed
-import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
-import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.google.accompanist.flowlayout.FlowCrossAxisAlignment
-import com.google.accompanist.flowlayout.FlowMainAxisAlignment
 import com.sam.kingjamesbible.feature_bible.core.components.TopBar
 import com.sam.kingjamesbible.feature_bible.presentation.chapter_screen.components.ChapterButton
-import com.google.accompanist.flowlayout.FlowRow
+import com.sam.kingjamesbible.R
 import com.sam.kingjamesbible.feature_bible.core.UiEvents
 import com.sam.kingjamesbible.feature_bible.core.components.LoadingScreen
 import kotlinx.coroutines.flow.collectLatest
@@ -80,17 +70,17 @@ fun ChapterScreen(
     Scaffold(
         modifier = modifier,
         topBar = {
-            TopBar(title = "Select Chapter") {
+            TopBar(title = stringResource(id = R.string.select_chapter)) {
                 onBackPress()
             }
         },
         scaffoldState = scaffoldState
     ) {
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(it)
+                .padding(4.dp)
         ) {
             Spacer(modifier = Modifier.height(10.dp))
             Row(
@@ -107,7 +97,9 @@ fun ChapterScreen(
             Spacer(modifier = Modifier.height(10.dp))
             LazyVerticalGrid(columns = GridCells.Fixed(5)) {
                 items(chapters) { chapterData ->
-                    ChapterButton(text = chapterData.number) {
+                    ChapterButton(
+                        modifier = Modifier.padding(1.dp),
+                        text = chapterData.number) {
                         onChapterClicked(chapterData.id)
                     }
                 }
