@@ -4,7 +4,6 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
-import com.sam.kingjamesbible.feature_bible.domain.model.books.Books
 import com.sam.kingjamesbible.feature_bible.domain.model.books.Data
 import com.sam.kingjamesbible.feature_bible.presentation.book_screen.BookScreen
 import com.sam.kingjamesbible.feature_bible.presentation.book_screen.BookScreenState
@@ -12,16 +11,13 @@ import com.sam.kingjamesbible.ui.theme.KingJamesBibleTheme
 import org.junit.Rule
 import org.junit.Test
 
-class HomeScreenTest {
+class BookScreenTest {
 
     private val data = Data(abbreviation = "Gen",
         bibleId = "de4e12af7f28f599-01",
         id = "GEN",
         name = "Genesis",
         nameLong = "The First Book of Moses, called Genesis"
-    )
-    val books = Books(
-        listOf(data)
     )
 
     @get:Rule

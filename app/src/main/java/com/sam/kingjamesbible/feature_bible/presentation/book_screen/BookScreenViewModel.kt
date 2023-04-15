@@ -1,5 +1,10 @@
 package com.sam.kingjamesbible.feature_bible.presentation.book_screen
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sam.kingjamesbible.feature_bible.core.CHAPTER_SCREEN
@@ -17,7 +22,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BookScreenViewModel @Inject constructor(
-    private val useCases: UseCases
+    private val useCases: UseCases,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private var _state = MutableStateFlow(BookScreenState())
@@ -26,7 +32,10 @@ class BookScreenViewModel @Inject constructor(
     private var _uiEvents = MutableSharedFlow<UiEvents>()
     val uiEvents = _uiEvents.asSharedFlow()
 
+    private var testament by mutableStateOf("")
+
     init {
+        testament = savedStateHandle.get<String>("testament")!!
         getAllBooks()
     }
 
@@ -48,9 +57,17 @@ class BookScreenViewModel @Inject constructor(
                         )
                     }
                     is DataState.Success -> {
+                        val books = dataState.data?.map { it.toData() }!!
+                        val filteredBooks = if (testament == "OLD TESTAMENT"){
+                            books.subList(0,53).filter {
+                                !catholicsBooks.contains(it.name)
+                            }
+                        }else{
+                            books.subList(53,books.size)
+                        }
                         _state.value = _state.value.copy(
                             loading = false,
-                            books = dataState.data?.map { it.toData() }!!,
+                            books = filteredBooks,
                         )
                     }
                     is DataState.Error -> {

@@ -51,12 +51,7 @@ fun VerseScreen(
                 is UiEvents.PopBackStack -> {
                     onBackPressed()
                 }
-                is UiEvents.ShowSnackBar -> {
-                    scaffoldState.snackbarHostState.showSnackbar(
-                        message = events.message
-                    )
-                }
-
+                is UiEvents.ShowSnackBar -> Unit
                 is UiEvents.Navigate -> Unit
             }
         }

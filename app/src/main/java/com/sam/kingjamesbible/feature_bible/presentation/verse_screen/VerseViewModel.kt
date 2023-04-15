@@ -90,7 +90,6 @@ class VerseViewModel @Inject constructor(
                                 bookChapter = verses.reference
                             )
                         }
-                        emitUiEvents(UiEvents.ShowSnackBar(it.message!!))
                         isPreviousActive = _state.value.bookChapter.split(" ").last() != "1"
                         isNextActive = _state.value.bookChapter.split(" ").last() != chapterCount
                     }

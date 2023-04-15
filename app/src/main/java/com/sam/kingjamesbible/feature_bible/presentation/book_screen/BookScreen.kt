@@ -21,7 +21,6 @@ fun BookScreen(
     modifier: Modifier = Modifier,
     viewModel: BookScreenViewModel,
     onBackClicked: () -> Unit,
-    testament:String = "",
     onBookClick: (String)->Unit
 ) {
     val uiState = viewModel.state.collectAsStateWithLifecycle().value
@@ -46,7 +45,6 @@ fun BookScreen(
     BookScreen(
         modifier = modifier,
         state = uiState,
-        testament = testament,
         onBackClicked = viewModel::onBackClicked,
         scaffoldState = scaffoldState,
         onBookClick = viewModel::onBookClicked
@@ -57,23 +55,10 @@ fun BookScreen(
 fun BookScreen(
     modifier: Modifier = Modifier,
     state: BookScreenState,
-    testament:String = "",
     onBackClicked:() ->Unit = {},
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     onBookClick: (String,String) -> Unit
 ) {
-    val bibleBooks = state.books
-    val books = if (!state.loading){
-        if (testament == "OLD TESTAMENT"){
-            bibleBooks.subList(0,53).filter {
-                !catholicsBooks.contains(it.name)
-            }
-        }else{
-            bibleBooks.subList(53,bibleBooks.size)
-        }
-    }else{
-        state.books
-    }
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
@@ -87,7 +72,7 @@ fun BookScreen(
     ) {
         Surface(modifier = Modifier.padding(it)) {
             LazyColumn {
-                itemsIndexed(books) { index, data ->
+                itemsIndexed(state.books) { index, data ->
                     val backgroundColor =
                         if (index % 2 == 0)
                             MaterialTheme.colors.secondary.copy(alpha = 0.1f)

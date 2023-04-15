@@ -64,12 +64,10 @@ fun MyApp(navController: NavHostController) {
             )
         ) {
             val viewModel: BookScreenViewModel = hiltViewModel()
-            val testament = it.arguments?.getString("testament")!!
             BookScreen(
                 modifier = Modifier
                     .semantics { contentDescription = "Home Screen" },
                 viewModel = viewModel,
-                testament = testament,
                 onBackClicked = {
                     navController.popBackStack()
                 }
