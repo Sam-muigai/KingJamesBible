@@ -42,12 +42,12 @@ class ChapterViewModel @Inject constructor(
         getChapters(bookId)
     }
 
-    fun onChapterClicked(chapterId:String){
+    fun onChapterClicked(chapterId: String) {
         emitUiEvents(UiEvents.Navigate("$VERSE_SCREEN?chapterId=$chapterId?chapterCount=$chapterCount"))
     }
 
-    fun onBackPressed(){
-       emitUiEvents(UiEvents.PopBackStack)
+    fun onBackPressed() {
+        emitUiEvents(UiEvents.PopBackStack)
     }
 
 
@@ -56,20 +56,22 @@ class ChapterViewModel @Inject constructor(
             useCases.getChapters(bookId).collect { dataState ->
                 when (dataState) {
                     is DataState.Loading -> {
-                        _state.value = _state.value.copy(
-                            loading = true
-                        )
+                            _state.value = _state.value.copy(
+                                chapters = dataState.data?.map { it.toChapterData() } ?: emptyList(),
+                                loading = true
+                            )
                     }
                     is DataState.Success -> {
                         _state.value = _state.value.copy(
-                            chapters = dataState.data?.map { it.toChapterData() }!!,
+                            chapters = dataState.data?.map { it.toChapterData() } ?: emptyList(),
                             loading = false
                         )
                         chapterCount = (_state.value.chapters.size - 1).toString()
                     }
+
                     is DataState.Error -> {
                         _state.value = _state.value.copy(
-                            chapters = dataState.data?.map { it.toChapterData() }!!,
+                            chapters = dataState.data?.map { it.toChapterData() } ?: emptyList(),
                             loading = false
                         )
                         dataState.message?.let {
@@ -81,7 +83,7 @@ class ChapterViewModel @Inject constructor(
         }
     }
 
-    private fun emitUiEvents(events: UiEvents){
+    private fun emitUiEvents(events: UiEvents) {
         viewModelScope.launch {
             _uiEvents.emit(events)
         }

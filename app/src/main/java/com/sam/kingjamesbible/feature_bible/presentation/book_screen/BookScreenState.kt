@@ -4,7 +4,7 @@ import com.sam.kingjamesbible.feature_bible.domain.model.books.Data
 
 data class BookScreenState(
     val loading:Boolean = false,
-    val books:List<Data> = emptyList(),
+    val books:List<Data> = emptyList()
 )
 val catholicsBooks =
     listOf("1 Maccabees","2 Maccabees","Susanna",

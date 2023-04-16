@@ -33,6 +33,21 @@
             </AndroidTestResultsTableState>
           </value>
         </entry>
+        <entry key="-1325370625">
+          <value>
+            <AndroidTestResultsTableState>
+              <option name="preferredColumnWidths">
+                <map>
+                  <entry key="Duration" value="90" />
+                  <entry key="Pixel_XL_API_25" value="120" />
+                  <entry key="TECNO&#10; TECNO KH6" value="120" />
+                  <entry key="Tests" value="360" />
+                  <entry key="adb-087163326R002131-XVkvG0._adb-tls-connect._tcp" value="120" />
+                </map>
+              </option>
+            </AndroidTestResultsTableState>
+          </value>
+        </entry>
         <entry key="-431885971">
           <value>
             <AndroidTestResultsTableState>

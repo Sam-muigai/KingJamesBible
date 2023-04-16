@@ -26,7 +26,7 @@ fun DailyVerseCard(
     book:String,
     bibleVersion:String
 ) {
-    val dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
+
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -48,7 +48,7 @@ fun DailyVerseCard(
                 style = MaterialTheme.typography.h6
             )
             Text(
-                text = LocalDateTime.now().format(dateTimeFormatter),
+                text ="12 MAY 2024",
                 style = MaterialTheme.typography.h6.copy(
                     color = MaterialTheme.colors.primary
                 )

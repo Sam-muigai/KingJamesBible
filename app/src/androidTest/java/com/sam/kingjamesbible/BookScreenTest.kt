@@ -24,7 +24,7 @@ class BookScreenTest {
     val composeTestRule = createComposeRule()
 
     @Test
-    fun when_app_launches_top_bar_is_displayed() {
+    fun when_app_launches_title_of_screen_is_displayed() {
         composeTestRule.setContent {
             KingJamesBibleTheme {
                 BookScreen(
@@ -39,7 +39,7 @@ class BookScreenTest {
     }
 
     @Test
-    fun when_loading_animation_is_showing() {
+    fun when_state_is_loading_loading_animation_is_showing() {
         composeTestRule.setContent {
             KingJamesBibleTheme {
                 BookScreen(
@@ -69,9 +69,5 @@ class BookScreenTest {
             .onNodeWithText("Genesis")
             .assertIsDisplayed()
     }
-
-
-
-
 
 }

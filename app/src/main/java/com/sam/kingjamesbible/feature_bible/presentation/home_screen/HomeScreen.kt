@@ -20,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.sam.kingjamesbible.R
 import com.sam.kingjamesbible.feature_bible.core.UiEvents
 import com.sam.kingjamesbible.feature_bible.core.components.TopBar
@@ -34,7 +35,7 @@ fun HomeScreen(
     viewModel: HomeScreenViewModel = hiltViewModel(),
     onTestamentClick: (String) -> Unit
 ) {
-    val uiState = viewModel.state.collectAsState().value
+    val uiState = viewModel.state.collectAsStateWithLifecycle().value
     LaunchedEffect(key1 = true){
         viewModel.uiEvents.collectLatest {
             when(it){

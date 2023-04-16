@@ -27,6 +27,8 @@ class BibleRepositoryImpl @Inject constructor(
     override fun getAllBooks(): Flow<DataState<List<BookData>>> {
         return flow {
             emit(DataState.Loading())
+            val books = dao.getAllBooks()
+            emit(DataState.Loading(books))
             try {
                 val booksDto = api.getAllBooks().data
                 dao.deleteBook(booksDto.map { it.toBookData() })
@@ -55,15 +57,15 @@ class BibleRepositoryImpl @Inject constructor(
 
     override fun getChapter(bookId: String): Flow<DataState<List<ChapterDataLocal>>> =
         flow {
-            emit(DataState.Loading())
+            emit(DataState.Loading(null))
+            val localChapters = dao.getChapters(bookId)
+            emit(DataState.Loading(localChapters))
             try {
                 val chapterRemote = api.getChapters(bookId = bookId).data
                 val chapterDataLocal = chapterRemote.map { it.toChapterDataLocal() }
                 dao.deleteChapters(chapterDataLocal)
                 dao.insertChapters(chapterDataLocal)
                 val chapters = dao.getChapters(bookId)
-                // TODO: Refactor:Added a delay to allow completion of insertion before emitting Success
-                delay(2000)
                 emit(
                     DataState.Success(
                         data = chapters
@@ -86,6 +88,7 @@ class BibleRepositoryImpl @Inject constructor(
                     )
                 )
             }
+
         }
 
     override fun getVerses(chapterId: String): Flow<DataState<VersesLocal>> {

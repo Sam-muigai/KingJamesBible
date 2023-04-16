@@ -52,6 +52,12 @@ class BookScreenViewModel @Inject constructor(
             useCases.getAllBooks().collect { dataState ->
                 when (dataState) {
                     is DataState.Loading -> {
+                        dataState.data?.let { books ->
+                            _state.value = _state.value.copy(
+                                books = books.map { it.toData() },
+                                loading = false
+                            )
+                        }
                         _state.value = _state.value.copy(
                             loading = true
                         )

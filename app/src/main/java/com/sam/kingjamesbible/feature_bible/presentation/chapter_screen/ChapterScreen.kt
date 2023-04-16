@@ -104,7 +104,7 @@ fun ChapterScreen(
                     }
                 }
             }
-            if (state.loading) {
+            if (state.loading && state.chapters.isEmpty()) {
                 LoadingScreen(
                     modifier = Modifier.semantics {
                         contentDescription = "Loading animation"
