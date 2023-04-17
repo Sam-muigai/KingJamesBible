@@ -18,7 +18,7 @@ import com.sam.kingjamesbible.ui.theme.KingJamesBibleTheme
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-@RequiresApi(Build.VERSION_CODES.O)
+
 @Composable
 fun DailyVerseCard(
     modifier: Modifier = Modifier,
