@@ -1,4 +1,4 @@
-package com.sam.kingjamesbible
+package com.sam.kingjamesbible.feature_bible.presentation
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule

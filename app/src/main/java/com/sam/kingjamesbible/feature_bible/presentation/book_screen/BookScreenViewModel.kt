@@ -77,8 +77,16 @@ class BookScreenViewModel @Inject constructor(
                         )
                     }
                     is DataState.Error -> {
+                        val books = dataState.data?.map { it.toData() }!!
+                        val filteredBooks = if (testament == "OLD TESTAMENT"){
+                            books.subList(0,53).filter {
+                                !catholicsBooks.contains(it.name)
+                            }
+                        }else{
+                            books.subList(53,books.size)
+                        }
                         _state.value = _state.value.copy(
-                            books = dataState.data?.map { it.toData() }!!,
+                            books = filteredBooks,
                             loading = false
                         )
                         emitUiEvent(UiEvents.ShowSnackBar(dataState.message!!))
